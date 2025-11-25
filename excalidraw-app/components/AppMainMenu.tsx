@@ -2,6 +2,7 @@ import {
   loginIcon,
   ExcalLogo,
   eyeIcon,
+  CameraIcon,
 } from "@excalidraw/excalidraw/components/icons";
 import { MainMenu } from "@excalidraw/excalidraw/index";
 import React from "react";
@@ -22,6 +23,8 @@ export const AppMainMenu: React.FC<{
   theme: Theme | "system";
   setTheme: (theme: Theme | "system") => void;
   refresh: () => void;
+  onToggleLens?: () => void;
+  onToggleKanji?: () => void;
 }> = React.memo((props) => {
   return (
     <MainMenu>
@@ -39,12 +42,21 @@ export const AppMainMenu: React.FC<{
       <MainMenu.DefaultItems.SearchMenu />
       <MainMenu.DefaultItems.Help />
       <MainMenu.DefaultItems.ClearCanvas />
+      {props.onToggleLens && (
+        <MainMenu.Item icon={CameraIcon} onClick={props.onToggleLens}>
+          Capture Lens
+        </MainMenu.Item>
+      )}
+      {props.onToggleKanji && (
+        <MainMenu.Item icon={ExcalLogo} onClick={props.onToggleKanji}>
+          Kanji Card
+        </MainMenu.Item>
+      )}
       <MainMenu.Separator />
       <MainMenu.ItemLink
         icon={ExcalLogo}
-        href={`${
-          import.meta.env.VITE_APP_PLUS_LP
-        }/plus?utm_source=excalidraw&utm_medium=app&utm_content=hamburger`}
+        href={`${import.meta.env.VITE_APP_PLUS_LP
+          }/plus?utm_source=excalidraw&utm_medium=app&utm_content=hamburger`}
         className=""
       >
         Excalidraw+
@@ -52,9 +64,8 @@ export const AppMainMenu: React.FC<{
       <MainMenu.DefaultItems.Socials />
       <MainMenu.ItemLink
         icon={loginIcon}
-        href={`${import.meta.env.VITE_APP_PLUS_APP}${
-          isExcalidrawPlusSignedUser ? "" : "/sign-up"
-        }?utm_source=signin&utm_medium=app&utm_content=hamburger`}
+        href={`${import.meta.env.VITE_APP_PLUS_APP}${isExcalidrawPlusSignedUser ? "" : "/sign-up"
+          }?utm_source=signin&utm_medium=app&utm_content=hamburger`}
         className="highlighted"
       >
         {isExcalidrawPlusSignedUser ? "Sign in" : "Sign up"}

@@ -1,0 +1,181 @@
+.lens-overlay {
+  position: fixed;
+  border: 3px dashed #4a90e2;
+  background: rgba(74, 144, 226, 0.1);
+  cursor: move;
+  z-index: 10000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border-radius: 4px;
+  user-select: none;
+
+  \u0026:hover {
+    background: rgba(74, 144, 226, 0.15);
+  }
+
+  .lens-content {
+    width: 100%;
+    height: 100%;
+    position: relative;
+  }
+
+  .lens-controls {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    display: flex;
+    gap: 8px;
+    z-index: 10001;
+  }
+
+  .lens-button {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.95);
+    color: #333;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    transition: all 0.2s ease;
+    white-space: nowrap;
+
+    \u0026:hover {
+      background: rgba(255, 255, 255, 1);
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.25);
+      transform: translateY(-1px);
+    }
+
+    \u0026:active {
+      transform: translateY(0);
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+    }
+  }
+
+  .lens-capture-button {
+    background: rgba(74, 144, 226, 0.95);
+    color: white;
+
+    \u0026:hover {
+      background: rgba(74, 144, 226, 1);
+    }
+  }
+
+  .lens-ocr-button {
+    background: rgba(76, 175, 80, 0.95);
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    \u0026:hover:not(:disabled) {
+      background: rgba(76, 175, 80, 1);
+    }
+
+    \u0026:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+  }
+
+  .lens-close-button {
+    padding: 6px 10px;
+    font-size: 16px;
+    line-height: 1;
+  }
+
+  .lens-resize-handle {
+    position: absolute;
+    background: #4a90e2;
+    border: 2px solid white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    z-index: 10002;
+
+    \u0026:hover {
+      background: #357abd;
+    }
+  }
+
+  // Corner handles (larger)
+  .lens-resize-handle-nw,
+  .lens-resize-handle-ne,
+  .lens-resize-handle-se,
+  .lens-resize-handle-sw {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+  }
+
+  // Edge handles (smaller)
+  .lens-resize-handle-n,
+  .lens-resize-handle-s {
+    width: 12px;
+    height: 8px;
+    border-radius: 4px;
+  }
+
+  .lens-resize-handle-e,
+  .lens-resize-handle-w {
+    width: 8px;
+    height: 12px;
+    border-radius: 4px;
+  }
+
+  // Positioning
+  .lens-resize-handle-nw {
+    top: -6px;
+    left: -6px;
+    cursor: nw-resize;
+  }
+
+  .lens-resize-handle-n {
+    top: -4px;
+    left: 50%;
+    transform: translateX(-50%);
+    cursor: n-resize;
+  }
+
+  .lens-resize-handle-ne {
+    top: -6px;
+    right: -6px;
+    cursor: ne-resize;
+  }
+
+  .lens-resize-handle-e {
+    top: 50%;
+    right: -4px;
+    transform: translateY(-50%);
+    cursor: e-resize;
+  }
+
+  .lens-resize-handle-se {
+    bottom: -6px;
+    right: -6px;
+    cursor: se-resize;
+  }
+
+  .lens-resize-handle-s {
+    bottom: -4px;
+    left: 50%;
+    transform: translateX(-50%);
+    cursor: s-resize;
+  }
+
+  .lens-resize-handle-sw {
+    bottom: -6px;
+    left: -6px;
+    cursor: sw-resize;
+  }
+
+  .lens-resize-handle-w {
+    top: 50%;
+    left: -4px;
+    transform: translateY(-50%);
+    cursor: w-resize;
+  }
+}

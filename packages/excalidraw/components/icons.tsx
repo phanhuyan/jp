@@ -2186,10 +2186,25 @@ export const loginIcon = createIcon(
 );
 
 export const youtubeIcon = createIcon(
-  <g>
+  <g strokeWidth={1.25}>
     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
     <path d="M2 8a4 4 0 0 1 4 -4h12a4 4 0 0 1 4 4v8a4 4 0 0 1 -4 4h-12a4 4 0 0 1 -4 -4v-8z" />
     <path d="M10 9l5 3l-5 3z" />
+  </g>,
+  tablerIconProps,
+);
+
+// tabler-icons: text-scan-2
+export const OCRIcon = createIcon(
+  <g strokeWidth={1.5}>
+    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+    <path d="M4 8v-2a2 2 0 0 1 2 -2h2" />
+    <path d="M4 16v2a2 2 0 0 0 2 2h2" />
+    <path d="M16 4h2a2 2 0 0 1 2 2v2" />
+    <path d="M16 20h2a2 2 0 0 0 2 -2v-2" />
+    <path d="M7 12h10" />
+    <path d="M10 9v6" />
+    <path d="M14 9v6" />
   </g>,
   tablerIconProps,
 );
@@ -2370,6 +2385,15 @@ export const presentationIcon = createIcon(
     <path d="M12 16l0 4" />
     <path d="M9 20l6 0" />
     <path d="M8 12l3 -3l2 2l3 -3" />
+  </g>,
+  tablerIconProps,
+);
+
+export const CameraIcon = createIcon(
+  <g strokeWidth="1.5">
+    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+    <path d="M5 7h1a2 2 0 0 0 2 -2a1 1 0 0 1 1 -1h6a1 1 0 0 1 1 1a2 2 0 0 0 2 2h1a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-9a2 2 0 0 1 2 -2" />
+    <circle cx="12" cy="13" r="3" />
   </g>,
   tablerIconProps,
 );
