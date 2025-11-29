@@ -2,6 +2,9 @@
 import React, { useState } from "react";
 import { Island } from "@excalidraw/excalidraw/components/Island";
 import { CloseIcon } from "@excalidraw/excalidraw/components/icons";
+import { Button } from "@excalidraw/excalidraw/components/Button";
+import { Excalidraw } from "@excalidraw/excalidraw";
+import type { ExcalidrawImperativeAPI } from "@excalidraw/excalidraw/types";
 import "./KanjiOverlay.scss";
 
 interface KanjiOverlayProps {
@@ -14,8 +17,9 @@ interface KanjiCardData {
     word: string;
     kanji: string;
     key: string[];
-    description: React.ReactNode;
-    footer: React.ReactNode;
+    key_words: string[];
+    mark?: boolean;
+    story: React.ReactNode;
 }
 
 const KANJI_DATA: KanjiCardData[] = [
@@ -24,20 +28,15 @@ const KANJI_DATA: KanjiCardData[] = [
         number: "1",
         word: "one",
         kanji: "一",
-        key: ["floor", "ceiling", "one"],
-        description: (
+        key: ["floor", "ceiling"],
+        key_words: ["floor", "ceiling"],
+        mark: true,
+        story: (
             <>
-                In Chinese characters, the number <strong>one</strong> is laid on its
-                side, unlike the Roman numeral I which stands upright. As you would
-                expect, it is written from left to right. [1]
-            </>
-        ),
-        footer: (
-            <>
-                * As a primitive element, the key-word meaning is discarded, and the
-                single horizontal stroke takes on the meaning of <em>floor</em> or{" "}
-                <em>ceiling</em>, depending on its position: if it stands above another
-                primitive, it means <em>ceiling</em>; if below, <em>floor</em>.
+                * As a primitive element, the key-word meaning is discarded,
+                and the single horizontal stroke takes on the meaning of floor
+                or ceiling, depending on its position: if it stands above another
+                primitive, it means ceiling; if below, floor.
             </>
         ),
     },
@@ -47,7 +46,9 @@ const KANJI_DATA: KanjiCardData[] = [
         word: "eight",
         kanji: "八",
         key: ["eight"],
-        description: (
+        key_words: ["eight", "floor"],
+        mark: true,
+        story: (
             <>
                 Just as the Arabic numeral "8" is composed of a small circle followed by
                 a larger one, so the kanji for <strong>eight</strong> is composed of a
@@ -58,18 +59,12 @@ const KANJI_DATA: KanjiCardData[] = [
                 <em>infinite expanse</em> or something "all-encompassing." [2]
             </>
         ),
-        footer: (
-            <div style={{ display: "flex", gap: "20px", fontSize: "1.5rem" }}>
-                <span>丿</span>
-                <span>八</span>
-            </div>
-        ),
     },
 ];
 
 export const KanjiOverlay: React.FC<KanjiOverlayProps> = ({ onClose }) => {
     const [currentIndex, setCurrentIndex] = useState(0);
-    const [position, setPosition] = useState({ x: window.innerWidth / 2, y: window.innerHeight / 2 });
+    const [position, setPosition] = useState({ x: window.innerWidth / 2, y: window.innerHeight / 4 });
     const [size, setSize] = useState({ width: 600, height: 400 });
     const [isDragging, setIsDragging] = useState(false);
     const [isResizing, setIsResizing] = useState(false);
@@ -131,6 +126,25 @@ export const KanjiOverlay: React.FC<KanjiOverlayProps> = ({ onClose }) => {
 
     const currentCard = KANJI_DATA[currentIndex];
 
+    const [excalidrawAPI, setExcalidrawAPI] = useState<ExcalidrawImperativeAPI | null>(null);
+
+    const clearCanvas = () => {
+        if (excalidrawAPI) {
+            excalidrawAPI.resetScene();
+        }
+    };
+
+    const checkDrawing = () => {
+        if (excalidrawAPI) {
+            const elements = excalidrawAPI.getSceneElements();
+            if (elements.length > 0) {
+                alert(`Drawing checked! Found ${elements.length} strokes.`);
+            } else {
+                alert("Please draw something first!");
+            }
+        }
+    };
+
     return (
         <div
             className="KanjiOverlay"
@@ -148,16 +162,14 @@ export const KanjiOverlay: React.FC<KanjiOverlayProps> = ({ onClose }) => {
         >
             <div style={{ width: "100%", height: "100%" }} onMouseDown={handleMouseDown}>
                 <Island padding={4} className="KanjiOverlay__island" style={{ width: "100%", height: "100%" }}>
-                    <button
-                        className="KanjiOverlay__close"
-                        onClick={onClose}
-                        title="Close"
-                        aria-label="Close"
-                        type="button"
-                        onMouseDown={(e) => e.stopPropagation()}
+                    <Button
+                        onSelect={onClose}
+                        data-testid="sidebar-close"
+                        className="sidebar__close"
+                        style={{ width: 24, height: 24 }}
                     >
                         {CloseIcon}
-                    </button>
+                    </Button>
 
                     <div className="KanjiOverlay__navigation">
                         <button
@@ -177,18 +189,57 @@ export const KanjiOverlay: React.FC<KanjiOverlayProps> = ({ onClose }) => {
                             →
                         </button>
                     </div>
-
                     <div className="KanjiOverlay__header">
-                        <div className="KanjiOverlay__number">{currentCard.number}</div>
+                        <div className="KanjiOverlay__kanji">
+                            {currentCard.mark && <div className="KanjiOverlay__mark">*</div>}
+                            {currentCard.kanji}
+                        </div>
                         <div className="KanjiOverlay__word">{currentCard.word}</div>
                     </div>
 
-                    <div className="KanjiOverlay__body">
-                        <div className="KanjiOverlay__kanji">{currentCard.kanji}</div>
-                        <div className="KanjiOverlay__description">{currentCard.description}</div>
+                    <div className="KanjiOverlay__keywords">
+                        {currentCard.key_words.map((keyword, index) => (
+                            <button
+                                key={index}
+                                className="KanjiOverlay__keyword-chip"
+                                onClick={() => {
+                                    const targetIndex = KANJI_DATA.findIndex((card) =>
+                                        card.key.includes(keyword),
+                                    );
+                                    if (targetIndex !== -1) {
+                                        setCurrentIndex(targetIndex);
+                                    }
+                                }}
+                                type="button"
+                            >
+                                {keyword}
+                            </button>
+                        ))}
                     </div>
 
-                    <div className="KanjiOverlay__footer">{currentCard.footer}</div>
+                    <div className="KanjiOverlay__body">
+                        <div className="KanjiOverlay__description">{currentCard.story}</div>
+                    </div>
+
+                    <div style={{ width: "100%", height: "100%" }} onMouseDown={(e) => e.stopPropagation()}>
+                        <Excalidraw
+                            excalidrawAPI={(api) => setExcalidrawAPI(api)}
+                            viewModeEnabled={false}
+                            zenModeEnabled={true}
+                            gridModeEnabled={false}
+                            UIOptions={{
+                                canvasActions: {
+                                    changeViewBackgroundColor: false,
+                                    clearCanvas: false,
+                                    export: false,
+                                    loadScene: false,
+                                    saveToActiveFile: false,
+                                    toggleTheme: false,
+                                    saveAsImage: false,
+                                },
+                            }}
+                        />
+                    </div>
                     <div
                         className="KanjiOverlay__resize-handle"
                         onMouseDown={handleResizeMouseDown}
