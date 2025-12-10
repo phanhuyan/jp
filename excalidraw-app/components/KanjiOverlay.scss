@@ -1,4 +1,5 @@
 @import "../../packages/excalidraw/css/variables.module.scss";
+@import url('https://fonts.googleapis.com/css2?family=Klee+One:wght@400;600&display=swap');
 
 .excalidraw-app {
     .KanjiOverlay {
@@ -8,7 +9,7 @@
         max-width: 90vw;
         max-height: 90vh;
         user-select: text;
-        font-family: "Excalifont", "Xiaolai";
+        font-family: "UD Digital Kyokasho", "Yu Kyokasho", "Klee One", "Excalifont";
         color: var(--color-on-surface);
 
         .KanjiOverlay__island {
@@ -34,8 +35,16 @@
             left: 50%;
             transform: translateX(-50%);
             display: flex;
+            align-items: center;
             gap: 0.5rem;
             z-index: 10;
+
+            .KanjiOverlay__counter {
+                font-size: 0.9rem;
+                font-weight: 600;
+                color: var(--color-gray-60);
+                margin-right: 0.5rem;
+            }
 
             .KanjiOverlay__nav-button {
                 width: auto;
@@ -83,6 +92,12 @@
                 font-weight: 400;
                 color: var(--color-primary);
             }
+
+            .KanjiOverlay__meta {
+                font-size: 0.9rem;
+                color: var(--color-gray-60);
+                margin-top: 0.25rem;
+            }
         }
 
         .KanjiOverlay__keywords {
@@ -90,16 +105,24 @@
             gap: 0.5rem;
             margin-bottom: 1.5rem;
             flex-wrap: wrap;
+            justify-content: center;
 
             .KanjiOverlay__keyword-chip {
                 @include outlineButtonStyles;
                 width: auto;
                 height: auto;
                 padding: 0.25rem 0.75rem;
-                font-size: 1rem;
-                border: 2px solid;
+                font-size: 0.85rem;
+                border: 2px solid var(--color-primary);
                 border-radius: 8px;
-                background-color: red;
+                background-color: transparent;
+                cursor: pointer;
+                transition: background-color 0.2s;
+
+                &:hover {
+                    background-color: var(--color-primary);
+                    color: white;
+                }
             }
         }
 
@@ -107,7 +130,25 @@
             display: flex;
             gap: 1.5rem;
             align-items: flex-start;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
+
+            .KanjiOverlay__readings {
+                flex: 1;
+                font-size: 0.9rem;
+                line-height: 1.6;
+                color: var(--color-on-surface);
+                text-align: center;
+
+                .KanjiOverlay__reading {
+                    margin-bottom: 0.25rem;
+
+                    strong {
+                        font-weight: 600;
+                        color: var(--color-primary);
+                        margin-right: 0.25rem;
+                    }
+                }
+            }
 
             .KanjiOverlay__description {
                 flex: 1;

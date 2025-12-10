@@ -1,0 +1,294 @@
+// KanjiPage - Uses Excalidraw's native styling
+// Inherits from .excalidraw class for consistent theming
+
+// Animation for stroke drawing
+@keyframes drawStroke {
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+// Animation for stroke numbers appearing
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+    }
+}
+
+.KanjiPage {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: var(--default-bg-color, #ffffff);
+
+    // Loading and error states
+    &__loading,
+    &__error {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        color: var(--color-on-surface);
+        font-size: 1.2rem;
+    }
+
+    &__error {
+        color: var(--color-danger);
+    }
+
+    // ===== TOP BAR =====
+    &__topbar {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 20px;
+        flex-shrink: 0;
+        border-bottom: 1px solid var(--color-gray-20);
+    }
+
+    &__close,
+    &__settings {
+        min-width: 36px !important;
+        width: 36px !important;
+        height: 36px !important;
+        padding: 0 !important;
+        font-size: 1rem !important;
+    }
+
+    &__progress {
+        flex: 1;
+        height: 12px;
+        background: var(--color-gray-20);
+        border-radius: 6px;
+        overflow: hidden;
+    }
+
+    &__progress-bar {
+        height: 100%;
+        background: var(--color-primary);
+        border-radius: 6px;
+        transition: width 0.3s ease;
+    }
+
+    &__hearts {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        margin-left: 8px;
+    }
+
+    &__heart {
+        font-size: 1.2rem;
+    }
+
+    &__heart-count {
+        font-size: 1rem;
+        font-weight: 700;
+        color: var(--color-danger);
+    }
+
+    // ===== MAIN CONTENT =====
+    &__content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 16px;
+        padding: 20px;
+        overflow: hidden;
+    }
+
+    // ===== KANJI INFO BOX =====
+    &__kanji-box {
+        width: 100%;
+        max-width: 600px;
+        flex-shrink: 0;
+    }
+
+    &__kanji-content {
+        display: flex;
+        align-items: flex-start;
+        gap: 16px;
+    }
+
+    &__kanji-info {
+        flex: 1;
+        min-width: 0;
+    }
+
+    &__stroke-order {
+        width: 100px;
+        height: 100px;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: visible;
+        cursor: pointer;
+
+        svg {
+            overflow: visible;
+        }
+    }
+
+    &__kanji-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 10px;
+        font-size: 0.8rem;
+        color: var(--color-gray-60);
+    }
+
+    &__kanji-number {
+        font-weight: 700;
+        color: var(--color-primary);
+    }
+
+    &__kanji-strokes {
+        background: var(--color-gray-20);
+        padding: 2px 8px;
+        border-radius: 4px;
+    }
+
+    &__kanji-jlpt {
+        background: var(--color-primary);
+        color: var(--color-primary-darker);
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-weight: 600;
+    }
+
+    &__kanji-main {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        margin-bottom: 10px;
+    }
+
+    &__kanji-char {
+        font-size: 3.5rem;
+        font-weight: 400;
+        line-height: 1;
+        color: var(--color-on-surface);
+    }
+
+    &__kanji-keyword {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--color-on-surface);
+        text-transform: capitalize;
+    }
+
+    &__kanji-components {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-bottom: 10px;
+    }
+
+    &__component-chip {
+        background: var(--color-gray-10);
+        color: var(--color-gray-80);
+        padding: 3px 10px;
+        border-radius: 10px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        border: 1px solid var(--color-gray-30);
+    }
+
+    &__kanji-readings {
+        display: flex;
+        gap: 14px;
+        flex-wrap: wrap;
+        font-size: 0.85rem;
+        color: var(--color-gray-60);
+
+        strong {
+            color: var(--color-primary);
+            margin-right: 3px;
+        }
+    }
+
+    // ===== DRAWING BOX =====
+    &__drawing-box {
+        width: 100%;
+        max-width: 600px;
+        flex: 1;
+        min-height: 180px;
+        position: relative;
+        overflow: hidden;
+
+        .excalidraw {
+            width: 100% !important;
+            height: 100% !important;
+        }
+
+        .excalidraw-container {
+            width: 100% !important;
+            height: 100% !important;
+        }
+    }
+
+    &__status {
+        position: absolute;
+        bottom: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: var(--color-surface-mid);
+        color: var(--color-on-surface);
+        padding: 6px 16px;
+        border-radius: 16px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        z-index: 100;
+        box-shadow: var(--shadow-island);
+
+        &.success {
+            background: var(--color-success);
+            color: white;
+        }
+
+        &.error {
+            background: var(--color-danger);
+            color: white;
+        }
+    }
+
+    // ===== BOTTOM BAR =====
+    &__bottombar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 16px 20px;
+        border-top: 1px solid var(--color-gray-20);
+        flex-shrink: 0;
+    }
+
+    &__skip-btn {
+        padding: 10px 32px !important;
+        font-weight: 600 !important;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    &__check-btn {
+        padding: 10px 40px !important;
+        font-weight: 700 !important;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        background: var(--color-primary) !important;
+        color: var(--color-primary-darker) !important;
+        border: none !important;
+
+        &:hover:not(:disabled) {
+            background: var(--color-primary-light) !important;
+        }
+
+        &:disabled {
+            opacity: 0.6;
+        }
+    }
+}

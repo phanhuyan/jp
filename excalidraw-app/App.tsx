@@ -142,6 +142,7 @@ import { ExcalidrawPlusPromoBanner } from "./components/ExcalidrawPlusPromoBanne
 import { AppSidebar } from "./components/AppSidebar";
 import { LensOverlay } from "./components/LensOverlay";
 import { KanjiOverlay } from "./components/KanjiOverlay";
+import { KanjiPage } from "./components/KanjiPage";
 
 import type { CollabAPI } from "./collab/Collab";
 
@@ -1182,6 +1183,11 @@ const ExcalidrawApp = () => {
     window.location.pathname === "/excalidraw-plus-export";
   if (isCloudExportWindow) {
     return <ExcalidrawPlusIframeExport />;
+  }
+
+  const isKanjiPage = window.location.pathname === "/kanji";
+  if (isKanjiPage) {
+    return <KanjiPage />;
   }
 
   return (
